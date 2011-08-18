@@ -2,7 +2,7 @@
 ## History
 It is written in perl and depends on perl 5.1 features 
 
-##Dependancies
+##Dependencies
 POE::Component::IRC, POE::Component::IRC::Plugin::Connector, Time::HiRes and perl 5.1 or later
 
 ##Usage
@@ -11,7 +11,7 @@ start the script by simply chmodding it to executable and do ./ircbot.pl (/path/
 ##Configuration
 The configuration is in a simple file that is either monologue.conf in the same directory as the script or given to the bot at the commandline
 
-It expects 9 options to be set or it will barf at you, it ignores lines that start with a #
+It expects 9 options to be set or it will barf at you and tell you what option which is wrong. Comments starts with a hashtag #
 
 nick = The nick the bot will use when it connects to the irc network
 ircname = The ircname shown in the whois
@@ -24,5 +24,5 @@ monologue_kick_msg = same as flood_kick_msg but when kicking for monologging
 channels = comma delimited list of channels to join on the server chosen
 
 ##TODO
-Making a !exit and !restart command that has a whitelist as a comma delimited list in the config file
-Whitelist of which people are excempt from being kicked by the bot as a comma delimited list in the config file
++Making a !exit and !restart command that has a whitelist as a comma delimited list in the config file
++Whitelist of which people are excempt from being kicked by the bot as a comma delimited list in the config file
