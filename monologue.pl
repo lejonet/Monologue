@@ -59,7 +59,7 @@ sub bot_start {
 
 sub on_connect {
     my $login = "IDENTIFY".$config{'irc_password'};
-    $irc->yield(privwsg => "NickServ", $login);
+    $irc->yield(privmsg => "NickServ", $login);
     $irc->yield(join => $config{'channels'});
     my $greeting = 'Sir, Ready for duty, Sir!';
     $irc->yield(privmsg => $config{'channels'}, $greeting);
