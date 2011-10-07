@@ -25,5 +25,5 @@ channels = comma delimited list of channels to join on the server chosen
 irc_password = an irc password that makes it possible to identify to nickserv (has to be created beforehand and manually)
 
 ##TODO
-+Making a !exit and !restart command that has a whitelist as a comma delimited list in the config file
-+Whitelist of which people are excempt from being kicked by the bot as a comma delimited list in the config file
++ Making a !exit and !restart command that has a whitelist as a comma delimited list in the config file
++ Whitelist of which people are excempt from being kicked by the bot as a comma delimited list in the config file
