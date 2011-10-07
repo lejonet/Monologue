@@ -13,16 +13,16 @@ The configuration is in a simple file that is either monologue.conf in the same 
 
 It expects 10 options to be set or it will barf at you and tell you what option which is wrong. Comments starts with a hashtag #
 
-nick = The nick the bot will use when it connects to the irc network
-ircname = The ircname shown in the whois
-server = The irc server to connect to
-port = Port to connect to
-flood_limit = The amount of messages that is allowed to paste before being kicked (actually it is this number + 1, it kicks the next message after this limit has been reached)
-flood_kick_msg = The floodkick msg to be told to the person kicked
-monologue_limit = Same as flood_limit but regarding monologging instead of flooding
-monologue_kick_msg = same as flood_kick_msg but when kicking for monologging
-channels = comma delimited list of channels to join on the server chosen
-irc_password = an irc password that makes it possible to identify to nickserv (has to be created beforehand and manually)
++ nick = The nick the bot will use when it connects to the irc network
++ ircname = The ircname shown in the whois
++ server = The irc server to connect to
++ port = Port to connect to
++ flood_limit = The amount of messages that is allowed to paste before being kicked (actually it is this number + 1, it kicks the next message after this limit has been reached)
++ flood_kick_msg = The floodkick msg to be told to the person kicked
++ monologue_limit = Same as flood_limit but regarding monologging instead of flooding
++ monologue_kick_msg = same as flood_kick_msg but when kicking for monologging
++ channels = comma delimited list of channels to join on the server chosen
++ irc_password = an irc password that makes it possible to identify to nickserv (has to be created beforehand and manually)
 
 ##TODO
 + Making a !exit and !restart command that has a whitelist as a comma delimited list in the config file
