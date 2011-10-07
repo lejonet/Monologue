@@ -3,7 +3,7 @@
 It is written in perl and depends on perl 5.10 features 
 
 ##Dependencies
-POE::Component::IRC, POE::Component::IRC::Plugin::Connector, Time::HiRes and perl 5.1 or later
+POE::Component::IRC, POE::Component::IRC::Plugin::Connector, Time::HiRes and perl 5.10 or later
 
 ##Usage
 start the script by simply chmodding it to executable and do ./ircbot.pl (/path/to/config) or write the command perl ircbot.pl (/path/to/config)
