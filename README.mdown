@@ -1,6 +1,6 @@
 #Readme file for anti-flood/monologue bot
 ## History
-It is written in perl and depends on perl 5.1 features 
+It is written in perl and depends on perl 5.10 features 
 
 ##Dependencies
 POE::Component::IRC, POE::Component::IRC::Plugin::Connector, Time::HiRes and perl 5.1 or later
