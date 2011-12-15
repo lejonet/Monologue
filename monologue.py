@@ -14,7 +14,7 @@ def parse_config(conf_file = "monologue.conf"):
         if not '#' in line.split('=')[0]:
             if ',' in line.split('=')[1]:
                 config[line.split('=')[0].rstrip().lstrip()] = line.split('=')[1].rstrip().lstrip().split(',')
-            elif line.split('=')[1].isnumeric():
+            elif unicode(line.split('=')[1]).isnumeric():
                 config[line.split('=')[0].rstrip().lstrip()] = int(line.split('=')[1].rstrip().lstrip())
             else:
                 config[line.split('=')[0].rstrip().lstrip()] = line.split('=')[1].rstrip().lstrip()
@@ -39,11 +39,11 @@ def privmsg(irc,data):
 
     if username != msg_counter['current_talker']:
         msg_counter['current_talker'] = username
-        msg_counter[channel] = 1
+        msg_counter[channel.lstrip('#')] = 1
         msg_counter['flood'] = 0
     else:
         msg_counter[channel] += 1
-    print "%s %s = %d" % (msg_counter['current_talker'], channel, msg_counter[channel])
+    print "%s %s = %d" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')])
 
 def sources(irc, data):
     user_info, msg_type, channel, message = irc.privmsg_split(data)
@@ -53,7 +53,7 @@ def sources(irc, data):
 
 
 parse_config()
-irc = aidsbot(config['botname'], config['server'], 6667, True) #Set up the object
+irc = aidsbot(config['botname'], config['server'], int(config['port']), True) #Set up the object
 irc.postconnect=postconnect
 irc.connect() #Actually connect
 for channel in config['channels']:
