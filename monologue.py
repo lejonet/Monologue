@@ -13,6 +13,8 @@ def parse_config(conf_file = "monologue.conf"):
         if not '#' in line.split('=')[0]:
             if ',' in line.split('=')[1]:
                 config[line.split('=')[0].rstrip().lstrip()] = line.split('=')[1].rstrip().lstrip().split(',')
+            elif line.split('=')[1].isnumeric():
+                config[line.split('=')[0].rstrip().lstrip()] = int(line.split('=')[1].rstrip().lstrip())
             else:
                 config[line.split('=')[0].rstrip().lstrip()] = line.split('=')[1].rstrip().lstrip()
 
@@ -30,8 +32,8 @@ def postconnect(irc):
     #irc.privmsg("NickServ", "IDENTIFY "+config['ircpassword'])
 
 def privmsg(irc,data):
-    user_info, msg_type, channel, message = privmsg_split(data)
-    username, real_user, host = user_split(user_info)
+    user_info, msg_type, channel, message = irc.privmsg_split(data)
+    username, real_user, host = irc.user_split(user_info)
 
     if username != msg_counter['current_talker']:
         msg_counter['current_talker'] = username
@@ -42,10 +44,10 @@ def privmsg(irc,data):
     print "%s %s = %d" % (msg_counter['current_talker'], channel, msg_counter[channel])
 
 def sources(irc, data):
-    user_info, msg_type, channel, message = privmsg_split(data)
-    username, real_user, host = user_split(user_info)
-    irc.privmsg("%s: Sources for monologue can be found at: %s", (username, "https://github.com/lejonet/Monologue"))
-    irc.privmsg("%s: Sources for aidsbot can be found at: %s and sources for lejonet's fork of aidsbot can be found at: %s" % (username, "https://github.com/adisbladis/aidsbot", "https://github.com/lejonet/aidsbot"))
+    user_info, msg_type, channel, message = irc.privmsg_split(data)
+    username, real_user, host = irc.user_split(user_info)
+    irc.privmsg(channel, "%s: Sources for monologue can be found at: %s" % (username, "https://github.com/lejonet/Monologue"))
+    irc.privmsg(channel, "%s: Sources for aidsbot can be found at: %s and sources for lejonet's fork of aidsbot can be found at: %s" % (username, "https://github.com/adisbladis/aidsbot", "https://github.com/lejonet/aidsbot"))
 
 
 parse_config()
