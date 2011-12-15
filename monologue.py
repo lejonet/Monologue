@@ -38,19 +38,27 @@ def privmsg(irc,data):
         msg_counter[channel] = 1
         msg_counter['flood'] = 0
     else:
-        msg_counter[channel]++
+        msg_counter[channel] += 1
     print "%s %s = %d" % (msg_counter['current_talker'], channel, msg_counter[channel])
 
+def sources(irc, data):
+    user_info, msg_type, channel, message = privmsg_split(data)
+    username, real_user, host = user_split(user_info)
+    irc.privmsg("%s: Sources for monologue can be found at: %s", (username, "https://github.com/lejonet/Monologue"))
+    irc.privmsg("%s: Sources for aidsbot can be found at: %s and sources for lejonet's fork of aidsbot can be found at: %s" % (username, "https://github.com/adisbladis/aidsbot", "https://github.com/lejonet/aidsbot"))
 
+
+parse_config()
 irc = aidsbot(config['botname'], config['server'], 6667, True) #Set up the object
 irc.postconnect=postconnect
 irc.connect() #Actually connect
-for channel in config['channellist']:
+for channel in config['channels']:
     irc.join(channel) #Join a channel
     irc.privmsg(channel, 'Yo maddafakas!') #Send a message
 
 irc.chanophandler_add("JOIN",join)
 irc.chanophandler_add("PRIVMSG", privmsg)
+irc.privmsghandler_add("!source", sources)
 irc.listen() #Start listening
 
 while True:
