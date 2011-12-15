@@ -42,7 +42,7 @@ def privmsg(irc,data):
         msg_counter[channel.lstrip('#')] = 1
         msg_counter['flood'] = 0
     else:
-        msg_counter[channel] += 1
+        msg_counter[channel.lstrip('#')] += 1
     print "%s %s = %d" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')])
 
 def sources(irc, data):
