@@ -1,29 +1,30 @@
 #Readme file for anti-flood/monologue bot
 ## History
-It is written in perl and depends on perl 5.10 features 
+Was originally written in perl and depended on perl 5.10 features, it was then rewritten with python.
 
 ##Dependencies
-POE::Component::IRC, POE::Component::IRC::Plugin::Connector, Time::HiRes and perl 5.10 or later
+Python version 2.7 or later (would probably work with older python versions too) and [aidsbot] [1] IRC bot library.
+
+[1]: https://github.com/adisbladis/aidsbot "git repo of aidsbot"
 
 ##Usage
-start the script by simply chmodding it to executable and do ./ircbot.pl (/path/to/config) or write the command perl ircbot.pl (/path/to/config)
+start the script by simply chmodding it to executable and do ./monologue.py (/path/to/config) or write the command python monologue.py (/path/to/config)
 
 ##Configuration
-The configuration is in a simple file that is either monologue.conf in the same directory as the script or given to the bot at the commandline
+The configuration is in a simple file that is either monologue.conf in the same directory as the script or given to the bot on the commandline
 
-It expects 10 options to be set or it will barf at you and tell you what option which is wrong. Comments starts with a hashtag #
+It expects 8-9 options to be set or it will barf at you and tell you what option that is wrong or if you have too many/few options. Comments starts with a hashtag #
 
-+ nick = The nick the bot will use when it connects to the irc network
-+ ircname = The ircname shown in the whois
++ nick = The nick the bot will use when it connects to the irc network, will also be it's ircname in whois
 + server = The irc server to connect to
-+ port = Port to connect to
++ port = The port of the irc server to connect to
 + flood_limit = The amount of messages that is allowed to paste before being kicked (actually it is this number + 1, it kicks the next message after this limit has been reached)
 + flood_kick_msg = The floodkick msg to be told to the person kicked
 + monologue_limit = Same as flood_limit but regarding monologging instead of flooding
 + monologue_kick_msg = same as flood_kick_msg but when kicking for monologging
 + channels = comma delimited list of channels to join on the server chosen
-+ irc_password = an irc password that makes it possible to identify to nickserv (has to be created beforehand and manually)
++ irc_password = an irc password that makes it possible to identify to nickserv (has to be created beforehand and manually and it is optional)
 
 ##TODO
 + Making a !exit and !restart command that has a whitelist as a comma delimited list in the config file
-+ Whitelist of which people are excempt from being kicked by the bot as a comma delimited list in the config file
++ Whitelist of which people are excempt from being kicked by the bot as a comma delimited list in the config file, like ops and voiced people
