@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from aidsbot import aidsbot
 import time
 import code
 
 config = {}
-msg_counter = {}
+msg_counter = {'current_talker': None, 'flood': 0}
 
 def parse_config(conf_file = "monologue.conf"):
     f = open(conf_file, "r")
@@ -34,6 +35,7 @@ def postconnect(irc):
 def privmsg(irc,data):
     user_info, msg_type, channel, message = irc.privmsg_split(data)
     username, real_user, host = irc.user_split(user_info)
+    print "%s %s %s %s" % (type(username), username, type(msg_counter['current_talker']), msg_counter['current_talker'])
 
     if username != msg_counter['current_talker']:
         msg_counter['current_talker'] = username
