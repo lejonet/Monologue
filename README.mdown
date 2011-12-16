@@ -13,7 +13,7 @@ start the script by simply chmodding it to executable and do ./monologue.py (/pa
 ##Configuration
 The configuration is in a simple file that is either monologue.conf in the same directory as the script or given to the bot on the commandline
 
-It expects 8-9 options to be set or it will barf at you and tell you what option that is wrong or if you have too many/few options. Comments starts with a hashtag #
+It expects 8-9 options to be set and it will bark at you if you have too many/few options. Comments starts with a hashtag #
 
 + nick = The nick the bot will use when it connects to the irc network, will also be it's ircname in whois
 + server = The irc server to connect to
