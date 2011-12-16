@@ -38,21 +38,25 @@ def privmsg(irc,data):
         msg_counter['flood'] = 0
     else:
         msg_counter[channel.lstrip('#')] += 1
-        if (current_time - msg_counter['old_time']) < 2.6:
+        if (current_time - msg_counter['old_time']) < 85:
             msg_counter['flood'] += 1
     print "%s %s = %d flood: %d time taken: %d" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')], msg_counter['flood'], (current_time - msg_counter['old_time']))
     
-    if msg_counter['flood'] > config['flood_limit']:
-        msg = config['flood_msg']
-    elif msg_counter[channel.lstrip('#')] > config['monologue_limit']:
-        msg = config['monologue_msg']
-    irc.kick(channel, msg_counter['current_talker'], msg)
+    if msg_counter['flood'] > int(config['flood_limit']):
+        irc.kick(channel, msg_counter['current_talker'], config['flood_kick_msg'])
+        msg_counter[channel.lstrip('#')] = 0
+        msg_counter['flood'] = 0
+    elif msg_counter[channel.lstrip('#')] > int(config['monologue_limit']):
+        irc.kick(channel, msg_counter['current_talker'], config['monologue_kick_msg'])
+        msg_counter[channel.lstrip('#')] = 0
+        msg_counter['flood'] = 0
+
 
 def sources(irc, data):
     user_info, msg_type, channel, message = irc.privmsg_split(data)
     username, real_user, host = irc.user_split(user_info)
     irc.privmsg(channel, "%s: Sources for monologue can be found at: %s" % (username, "https://github.com/lejonet/Monologue"))
-    irc.privmsg(channel, "%s: Sources for aidsbot can be found at: %s and sources for lejonet's fork of aidsbot can be found at: %s" % (username, "https://github.com/adisbladis/aidsbot", "https://github.com/lejonet/aidsbot"))
+    irc.privmsg(channel, "%s: Sources for aidsbot can be found at: %s" % (username, "https://github.com/adisbladis/aidsbot"))
 
 
 parse_config()
