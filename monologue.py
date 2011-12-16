@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from aidsbot import aidsbot
-import time
-import code
+from time import *
+from code import interact
 
 config = {}
-msg_counter = {'current_talker': None, 'flood': 0}
+msg_counter = {'current_talker': None, 'flood': 0, 'old_time': time()}
 
 def parse_config(conf_file = "monologue.conf"):
     f = open(conf_file, "r")
@@ -22,12 +22,6 @@ def parse_config(conf_file = "monologue.conf"):
     for key, value in config.iteritems():
         print ("%s %s = %s %s" % (type(key), key, type(value), value))
 
-def join(irc,data):
-    '''Handle joins'''
-    print "A user has joined"
-    username, real_user, host = irc.user_split(data.split()[0])
-    irc.privmsg(data.split()[2].lstrip(':'), "Greetings %s!" % (username))
-
 def postconnect(irc):
     print "Postconnect function was triggered"
     #irc.privmsg("NickServ", "IDENTIFY "+config['ircpassword'])
@@ -35,6 +29,7 @@ def postconnect(irc):
 def privmsg(irc,data):
     user_info, msg_type, channel, message = irc.privmsg_split(data)
     username, real_user, host = irc.user_split(user_info)
+    current_time = time()
     print "%s %s %s %s" % (type(username), username, type(msg_counter['current_talker']), msg_counter['current_talker'])
 
     if username != msg_counter['current_talker']:
@@ -43,7 +38,15 @@ def privmsg(irc,data):
         msg_counter['flood'] = 0
     else:
         msg_counter[channel.lstrip('#')] += 1
-    print "%s %s = %d" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')])
+        if (current_time - msg_counter['old_time']) < 2.6:
+            msg_counter['flood'] += 1
+    print "%s %s = %d flood: %d time taken: %d" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')], msg_counter['flood'], (current_time - msg_counter['old_time']))
+    
+    if msg_counter['flood'] > config['flood_limit']:
+        msg = config['flood_msg']
+    elif msg_counter[channel.lstrip('#')] > config['monologue_limit']:
+        msg = config['monologue_msg']
+    irc.kick(channel, msg_counter['current_talker'], msg)
 
 def sources(irc, data):
     user_info, msg_type, channel, message = irc.privmsg_split(data)
@@ -60,10 +63,9 @@ for channel in config['channels']:
     irc.join(channel) #Join a channel
     irc.privmsg(channel, 'Yo maddafakas!') #Send a message
 
-irc.chanophandler_add("JOIN",join)
 irc.chanophandler_add("PRIVMSG", privmsg)
 irc.privmsghandler_add("!source", sources)
 irc.listen() #Start listening
 
 while True:
-    code.interact(local=locals()) #Important, will die otherwise
+    interact(local=locals()) #Important, will die otherwise
