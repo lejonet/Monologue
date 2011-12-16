@@ -66,7 +66,7 @@ for channel in config['channels']:
 
 irc.chanophandler_add("PRIVMSG", privmsg)
 irc.privmsghandler_add("!source", sources)
-irc.privmsg("NickServ", "IDENTIFY "+config['ircpassword'])
+irc.privmsg("NickServ", "IDENTIFY "+config['irc_password'])
 irc.listen() #Start listening
 
 while True:
