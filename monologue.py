@@ -22,10 +22,6 @@ def parse_config(conf_file = "monologue.conf"):
     for key, value in config.iteritems():
         print ("%s %s = %s %s" % (type(key), key, type(value), value))
 
-def postconnect(irc):
-    print "Postconnect function was triggered"
-    #irc.privmsg("NickServ", "IDENTIFY "+config['ircpassword'])
-
 def privmsg(irc,data):
     user_info, msg_type, channel, message = irc.privmsg_split(data)
     username, real_user, host = irc.user_split(user_info)
@@ -38,9 +34,10 @@ def privmsg(irc,data):
         msg_counter['flood'] = 0
     else:
         msg_counter[channel.lstrip('#')] += 1
-        if (current_time - msg_counter['old_time']) < 85:
+        diff = float(current_time) - float(msg_counter['old_time'])
+        if diff < 2.6:
             msg_counter['flood'] += 1
-    print "%s %s = %d flood: %d time taken: %d" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')], msg_counter['flood'], (current_time - msg_counter['old_time']))
+        print "%s %s = %d flood: %d time taken: %s %f" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')], msg_counter['flood'], type(diff), diff)
     
     if msg_counter['flood'] > int(config['flood_limit']):
         irc.kick(channel, msg_counter['current_talker'], config['flood_kick_msg'])
@@ -50,6 +47,7 @@ def privmsg(irc,data):
         irc.kick(channel, msg_counter['current_talker'], config['monologue_kick_msg'])
         msg_counter[channel.lstrip('#')] = 0
         msg_counter['flood'] = 0
+    msg_counter['old_time'] = current_time
 
 
 def sources(irc, data):
@@ -61,7 +59,6 @@ def sources(irc, data):
 
 parse_config()
 irc = aidsbot(config['botname'], config['server'], int(config['port']), True) #Set up the object
-irc.postconnect=postconnect
 irc.connect() #Actually connect
 for channel in config['channels']:
     irc.join(channel) #Join a channel
@@ -69,6 +66,7 @@ for channel in config['channels']:
 
 irc.chanophandler_add("PRIVMSG", privmsg)
 irc.privmsghandler_add("!source", sources)
+irc.privmsg("NickServ", "IDENTIFY "+config['ircpassword'])
 irc.listen() #Start listening
 
 while True:
