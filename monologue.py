@@ -19,10 +19,10 @@ def parse_config(conf_file = "monologue.conf"):
             else:
                 config[line.split('=')[0].rstrip().lstrip()] = line.split('=')[1].rstrip().lstrip()
     
-    if len(config) < 8:
+    if len(config) < 9:
         print "You have too few options in the config."
         exit(1)
-    elif len(config) > 9:
+    elif len(config) > 10:
         print "You have too many options in the config."
         exit(1)
     else:
@@ -44,7 +44,7 @@ def privmsg(irc,data):
     else:
         msg_counter[channel.lstrip('#')] += 1
         diff = float(current_time) - float(msg_counter['old_time'])
-        if diff < 2.6:
+        if diff < float(config['flood_time']):
             msg_counter['flood'] += 1
         else:
             msg_counter['flood'] = 0
