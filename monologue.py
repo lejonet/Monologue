@@ -46,6 +46,8 @@ def privmsg(irc,data):
         diff = float(current_time) - float(msg_counter['old_time'])
         if diff < 2.6:
             msg_counter['flood'] += 1
+        else:
+            msg_counter['flood'] = 0
         #print "%s %s = %d flood: %d time taken: %s %f" % (msg_counter['current_talker'], channel.lstrip('#'), msg_counter[channel.lstrip('#')], msg_counter['flood'], type(diff), diff)
     
     if msg_counter['flood'] > int(config['flood_limit']):
